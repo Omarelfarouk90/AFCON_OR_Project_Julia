@@ -1,4 +1,18 @@
-# AFCON 2025: Egypt Tournament Simulator (Operations Research)
+<div align="center">
+
+# 🏆 AFCON 2025: Egypt Tournament Simulator
+
+<img src="assets/afcon icon.png" alt="AFCON 2025 Morocco" width="400"/>
+
+### ⚽ Operations Research Project | 🇪🇬 Egyptian National Team
+
+[![Julia](https://img.shields.io/badge/Julia-1.8+-9558B2?style=flat&logo=julia&logoColor=white)](https://julialang.org/)
+[![AFCON](https://img.shields.io/badge/AFCON-2025-00B140?style=flat)](https://www.cafonline.com/)
+[![Morocco](https://img.shields.io/badge/Host-Morocco-C1272D?style=flat)](https://en.wikipedia.org/wiki/2025_Africa_Cup_of_Nations)
+
+</div>
+
+---
 
 ## Overview
 
@@ -474,8 +488,8 @@ For issues, questions, or suggestions:
 - Open an issue on GitHub
 - Email: [your-email]
 
-**Good luck to Egypt in AFCON 2025! 🇪🇬⚽🏆**
+**AFCON 2025 ⚽🏆**
 
 ---
 
-**Made with ❤️ for Egyptian Football | AFCON 2025 Morocco Edition**
+**Made for Football enthausiasts | AFCON 2025 Morocco Edition**
