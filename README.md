@@ -486,7 +486,7 @@ no_improve_limit = 100  # Down from 200
 
 For issues, questions, or suggestions:
 - Open an issue on GitHub
-- Email: [your-email]
+- Email: omar.elfarouk.90@gmail.com
 
 **AFCON 2025 ⚽🏆**
 
