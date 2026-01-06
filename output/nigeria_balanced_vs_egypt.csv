@@ -1,12 +1,12 @@
-Name,Position,Attack,Defense,Passing,Stamina,Consistency,Club,Matches_Last_5Y,Goals_Last_5Y,Assists_Last_5Y,FIFA_Ranking_Contribution
-Stanley Nwabali,GK,10,88,70,86,8.6,Chippa United,32,0,0,8.2
-Calvin Bassey,DF,70,90,80,92,9.0,Fulham,46,5,7,9.0
-Bright Osayi-Samuel,DF,80,82,78,92,8.6,Fenerbahce,44,6,11,8.6
-Ola Aina,DF,77,84,82,94,8.8,Nottingham Forest,52,6,12,9.0
-Raphael Onyedika,MF,80,84,86,92,8.8,Club Brugge,42,9,11,8.6
-Alex Iwobi,MF,87,74,90,92,9.0,Fulham,54,12,16,9.0
-Joe Aribo,MF,84,78,88,94,8.8,Southampton,52,11,14,8.8
-Wilfred Ndidi,MF,74,92,86,96,9.2,Leicester,56,7,10,9.2
-Frank Onyeka,MF,76,88,84,94,8.8,Brentford,48,6,9,8.8
-Ademola Lookman,FW,94,54,88,90,9.2,Atalanta,48,24,17,9.2
-Victor Osimhen,FW,98,50,82,92,9.8,Napoli,52,36,14,9.9
+Name,Position,Attack,Defense,Passing,Stamina,Consistency,Club,Matches_Last_5Y,Goals_Last_5Y,Assists_Last_5Y,FIFA_Ranking_Contribution,Injury_Risk,Fitness_Percent
+Stanley Nwabali,GK,10,88,70,86,8.6,Chippa United,32,0,0,8.2,0,100
+Calvin Bassey,DF,70,90,80,92,9.0,Fulham,46,5,7,9.0,0,100
+Bright Osayi-Samuel,DF,80,82,78,92,8.6,Fenerbahce,44,6,11,8.6,0,100
+Ola Aina,DF,77,84,82,94,8.8,Nottingham Forest,52,6,12,9.0,0,100
+Raphael Onyedika,MF,80,84,86,92,8.8,Club Brugge,42,9,11,8.6,0,100
+Alex Iwobi,MF,87,74,90,92,9.0,Fulham,54,12,16,9.0,0,100
+Joe Aribo,MF,84,78,88,94,8.8,Southampton,52,11,14,8.8,0,100
+Wilfred Ndidi,MF,74,92,86,96,9.2,Leicester,56,7,10,9.2,0,100
+Frank Onyeka,MF,76,88,84,94,8.8,Brentford,48,6,9,8.8,0,100
+Ademola Lookman,FW,94,54,88,90,9.2,Atalanta,48,24,17,9.2,0,100
+Victor Osimhen,FW,98,50,82,92,9.8,Napoli,52,36,14,9.9,0,100

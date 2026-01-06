@@ -56,8 +56,8 @@ summary_results = DataFrame(
 
 # Load Egypt squad
 egypt_data = CSV.read("data/egypt_squad.csv", DataFrame)
-println("✓ Loaded Egypt squad: $(nrow(egypt_data)) players")
-println("  Key Players: Mohamed Salah (Liverpool), Omar Marmoush (Frankfurt €65M)")
+println("[OK] Loaded Egypt squad: $(nrow(egypt_data)) players")
+println("  Key Players: Mohamed Salah (Liverpool), Omar Marmoush (Frankfurt EUR 65M)")
 println("  AFCON 2025 Results: Beat Zimbabwe 2-1, Beat South Africa 1-0, Drew Angola 0-0")
 println()
 
@@ -76,7 +76,7 @@ for (file, name, info) in opponents
     end
     
     opponent_data = CSV.read(opponent_file, DataFrame)
-    println("\n✓ Loaded $name squad: $(nrow(opponent_data)) players")
+    println("\n[OK] Loaded $name squad: $(nrow(opponent_data)) players")
     
     # Test each strategy
     for strategy in strategies
@@ -96,11 +96,11 @@ for (file, name, info) in opponents
         egypt_total = egypt_attack + egypt_defense + egypt_passing
         
         println("\n  Egypt Stats:")
-        println("    ⚔️  Attack: $(round(egypt_attack, digits=1))")
-        println("    🛡️  Defense: $(round(egypt_defense, digits=1))")
-        println("    🎯 Passing: $(round(egypt_passing, digits=1))")
-        println("    📊 Total: $(round(egypt_total, digits=1))")
-        println("    📐 Formation: $egypt_formation")
+        println("    [ATK] Attack: $(round(egypt_attack, digits=1))")
+        println("    [DEF] Defense: $(round(egypt_defense, digits=1))")
+        println("    [PAS] Passing: $(round(egypt_passing, digits=1))")
+        println("    [TOT] Total: $(round(egypt_total, digits=1))")
+        println("    [FRM] Formation: $egypt_formation")
         
         # Optimize opponent team with same strategy
         println("\n[2/2] Optimizing $name team with $strategy strategy...")
@@ -114,25 +114,25 @@ for (file, name, info) in opponents
         opp_total = opp_attack + opp_defense + opp_passing
         
         println("\n  $name Stats:")
-        println("    ⚔️  Attack: $(round(opp_attack, digits=1))")
-        println("    🛡️  Defense: $(round(opp_defense, digits=1))")
-        println("    🎯 Passing: $(round(opp_passing, digits=1))")
-        println("    📊 Total: $(round(opp_total, digits=1))")
-        println("    📐 Formation: $opp_formation")
+        println("    [ATK] Attack: $(round(opp_attack, digits=1))")
+        println("    [DEF] Defense: $(round(opp_defense, digits=1))")
+        println("    [PAS] Passing: $(round(opp_passing, digits=1))")
+        println("    [TOT] Total: $(round(opp_total, digits=1))")
+        println("    [FRM] Formation: $opp_formation")
         
         # Calculate advantage
         advantage = egypt_total - opp_total
         advantage_pct = (advantage / opp_total) * 100
         
-        println("\n  📊 MATCHUP ANALYSIS:")
+        println("\n  [MATCHUP ANALYSIS]:")
         if advantage > 5
-            println("    ✅ Egypt has STRONG advantage: +$(round(advantage, digits=1)) (+$(round(advantage_pct, digits=1))%)")
+            println("    [++] Egypt has STRONG advantage: +$(round(advantage, digits=1)) (+$(round(advantage_pct, digits=1))%)")
         elseif advantage > 0
-            println("    ⚖️  Egypt has SLIGHT advantage: +$(round(advantage, digits=1)) (+$(round(advantage_pct, digits=1))%)")
+            println("    [+] Egypt has SLIGHT advantage: +$(round(advantage, digits=1)) (+$(round(advantage_pct, digits=1))%)")
         elseif advantage > -5
-            println("    ⚖️  $name has SLIGHT advantage: $(round(advantage, digits=1)) ($(round(advantage_pct, digits=1))%)")
+            println("    [-] $name has SLIGHT advantage: $(round(advantage, digits=1)) ($(round(advantage_pct, digits=1))%)")
         else
-            println("    ❌ $name has STRONG advantage: $(round(advantage, digits=1)) ($(round(advantage_pct, digits=1))%)")
+            println("    [--] $name has STRONG advantage: $(round(advantage, digits=1)) ($(round(advantage_pct, digits=1))%)")
         end
         
         # Save teams to CSV
@@ -145,7 +145,7 @@ for (file, name, info) in opponents
         CSV.write(egypt_output, egypt_team)
         CSV.write(opp_output, opp_team)
         
-        println("\n  💾 Saved:")
+        println("\n  [SAVED]:")
         println("    - $egypt_output")
         println("    - $opp_output")
         
@@ -167,7 +167,7 @@ println("="^80)
 
 summary_file = "output/tournament_summary_afcon2025.csv"
 CSV.write(summary_file, summary_results)
-println("\n✓ Saved tournament summary: $summary_file")
+println("\n[OK] Saved tournament summary: $summary_file")
 
 # Analyze results
 println("\n" * "="^80)
@@ -175,7 +175,7 @@ println("STRATEGIC RECOMMENDATIONS FOR EGYPT")
 println("="^80)
 
 # Best strategy by opponent
-println("\n1️⃣  BEST STRATEGY BY OPPONENT:")
+println("\n[1] BEST STRATEGY BY OPPONENT:")
 for (file, name, info) in opponents
     opp_results = summary_results[summary_results.Opponent .== name, :]
     if nrow(opp_results) == 0
@@ -185,13 +185,13 @@ for (file, name, info) in opponents
     best_row = opp_results[argmax(opp_results.Egypt_Advantage), :]
     advantage = best_row.Egypt_Advantage
     
-    status = advantage > 5 ? "✅ FAVORABLE" : advantage > 0 ? "⚖️  COMPETITIVE" : "⚠️  CHALLENGING"
+    status = advantage > 5 ? "[FAVORABLE]" : advantage > 0 ? "[COMPETITIVE]" : "[CHALLENGING]"
     
-    println("  • vs $name: $(uppercase(best_row.Strategy)) formation $(best_row.Egypt_Formation) ($status, +$(round(advantage, digits=1)))")
+    println("  * vs $name: $(uppercase(best_row.Strategy)) formation $(best_row.Egypt_Formation) ($status, +$(round(advantage, digits=1)))")
 end
 
 # Overall best strategy
-println("\n2️⃣  OVERALL BEST STRATEGY:")
+println("\n[2] OVERALL BEST STRATEGY:")
 strategy_avg = combine(groupby(summary_results, :Strategy), 
     :Egypt_Advantage => mean => :Avg_Advantage,
     :Egypt_Total => mean => :Avg_Total_Score
@@ -200,17 +200,17 @@ sort!(strategy_avg, :Avg_Advantage, rev=true)
 
 println("\n  Strategy Performance (Average Advantage vs All Opponents):")
 for row in eachrow(strategy_avg)
-    status = row.Avg_Advantage > 3 ? "🔥 EXCELLENT" : row.Avg_Advantage > 0 ? "✅ GOOD" : "⚠️  RISKY"
+    status = row.Avg_Advantage > 3 ? "[EXCELLENT]" : row.Avg_Advantage > 0 ? "[GOOD]" : "[RISKY]"
     println("    $(uppercase(row.Strategy)): +$(round(row.Avg_Advantage, digits=2)) ($status)")
 end
 
 best_strategy = strategy_avg[1, :Strategy]
-println("\n  🏆 RECOMMENDED: $(uppercase(best_strategy)) strategy")
+println("\n  [RECOMMENDED]: $(uppercase(best_strategy)) strategy")
 println("     - Best average advantage: +$(round(strategy_avg[1, :Avg_Advantage], digits=2))")
 println("     - Highest total score: $(round(strategy_avg[1, :Avg_Total_Score], digits=1))")
 
 # Toughest opponents
-println("\n3️⃣  TOUGHEST OPPONENTS FOR EGYPT:")
+println("\n[3] TOUGHEST OPPONENTS FOR EGYPT:")
 opponent_avg = combine(groupby(summary_results, :Opponent), 
     :Egypt_Advantage => mean => :Avg_Advantage
 )
@@ -218,30 +218,30 @@ sort!(opponent_avg, :Avg_Advantage)
 
 println()
 for (i, row) in enumerate(eachrow(opponent_avg))
-    difficulty = i <= 2 ? "🔴 VERY HARD" : i <= 4 ? "🟡 MODERATE" : "🟢 MANAGEABLE"
+    difficulty = i <= 2 ? "[VERY HARD]" : i <= 4 ? "[MODERATE]" : "[MANAGEABLE]"
     println("  $(i). $(row.Opponent): $(round(row.Avg_Advantage, digits=1)) ($difficulty)")
 end
 
 # Formation analysis
-println("\n4️⃣  RECOMMENDED FORMATIONS:")
+println("\n[4] RECOMMENDED FORMATIONS:")
 egypt_formations = combine(groupby(summary_results, :Egypt_Formation), nrow => :Count)
 sort!(egypt_formations, :Count, rev=true)
 
 println()
 for row in eachrow(egypt_formations)
     pct = round((row.Count / nrow(summary_results)) * 100, digits=1)
-    println("  • $(row.Egypt_Formation): appeared $(row.Count)/$(nrow(summary_results)) times ($(pct)%)")
+    println("  * $(row.Egypt_Formation): appeared $(row.Count)/$(nrow(summary_results)) times ($(pct)%)")
 end
 
 println("\n" * "="^80)
-println("✓ SIMULATION COMPLETE!")
+println("[OK] SIMULATION COMPLETE!")
 println("="^80)
 println("\nGenerated Files:")
-println("  • $(length(opponents) * length(strategies) * 2) team CSV files in output/")
-println("  • 1 tournament summary report: output/tournament_summary_afcon2025.csv")
+println("  * $(length(opponents) * length(strategies) * 2) team CSV files in output/")
+println("  * 1 tournament summary report: output/tournament_summary_afcon2025.csv")
 println("\nNext Steps:")
 println("  1. Review tournament summary CSV for detailed comparisons")
 println("  2. Run visualization: julia full_simulation_visual.jl")
-println("  3. Prepare optimal lineup for upcoming Round of 16 match")
-println("\n🇪🇬 Best of luck to Egypt in AFCON 2025! 🏆")
+println("  3. Prepare optimal lineup for upcoming Quarter-Final match")
+println("\nBest of luck to Egypt in AFCON 2025!")
 println("="^80)

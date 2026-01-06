@@ -1,20 +1,20 @@
-Name,Position,Attack,Defense,Passing,Stamina,Consistency,Club,Matches_Last_5Y,Goals_Last_5Y,Assists_Last_5Y,FIFA_Ranking_Contribution
-Stanley Nwabali,GK,10,88,70,86,8.6,Chippa United,32,0,0,8.2
-Francis Uzoho,GK,10,86,68,84,8.4,Omonia Nicosia,42,0,0,8.2
-Ola Aina,DF,77,84,82,94,8.8,Nottingham Forest,52,6,12,9.0
-Calvin Bassey,DF,70,90,80,92,9.0,Fulham,46,5,7,9.0
-Semi Ajayi,DF,62,88,76,90,8.6,West Brom,48,7,4,8.4
-William Troost-Ekong,DF,58,90,74,88,8.8,PAOK,54,8,3,8.6
-Bright Osayi-Samuel,DF,80,82,78,92,8.6,Fenerbahce,44,6,11,8.6
-Wilfred Ndidi,MF,74,92,86,96,9.2,Leicester,56,7,10,9.2
-Frank Onyeka,MF,76,88,84,94,8.8,Brentford,48,6,9,8.8
-Alex Iwobi,MF,87,74,90,92,9.0,Fulham,54,12,16,9.0
-Joe Aribo,MF,84,78,88,94,8.8,Southampton,52,11,14,8.8
-Raphael Onyedika,MF,80,84,86,92,8.8,Club Brugge,42,9,11,8.6
-Samuel Chukwueze,FW,92,52,86,90,9.0,AC Milan,50,16,18,9.0
-Victor Osimhen,FW,98,50,82,92,9.8,Napoli,52,36,14,9.9
-Ademola Lookman,FW,94,54,88,90,9.2,Atalanta,48,24,17,9.2
-Moses Simon,FW,90,56,84,92,8.8,Nantes,54,18,20,8.8
-Kelechi Iheanacho,FW,88,50,80,88,8.6,Leicester,50,16,12,8.6
-Paul Onuachu,FW,90,48,76,90,8.8,Trabzonspor,46,22,10,8.6
-Terem Moffi,FW,86,48,78,90,8.4,Nice,42,14,10,8.4
+Name,Position,Attack,Defense,Passing,Stamina,Consistency,Club,Matches_Last_5Y,Goals_Last_5Y,Assists_Last_5Y,FIFA_Ranking_Contribution,Injury_Risk,Fitness_Percent
+Stanley Nwabali,GK,10,88,70,86,8.6,Chippa United,32,0,0,8.2,0,100
+Francis Uzoho,GK,10,86,68,84,8.4,Omonia Nicosia,42,0,0,8.2,0,100
+Ola Aina,DF,77,84,82,94,8.8,Nottingham Forest,52,6,12,9.0,0,100
+Calvin Bassey,DF,70,90,80,92,9.0,Fulham,46,5,7,9.0,0,100
+Semi Ajayi,DF,62,88,76,90,8.6,West Brom,48,7,4,8.4,0,100
+William Troost-Ekong,DF,58,90,74,88,8.8,PAOK,54,8,3,8.6,0,100
+Bright Osayi-Samuel,DF,80,82,78,92,8.6,Fenerbahce,44,6,11,8.6,0,100
+Wilfred Ndidi,MF,74,92,86,96,9.2,Leicester,56,7,10,9.2,0,100
+Frank Onyeka,MF,76,88,84,94,8.8,Brentford,48,6,9,8.8,0,100
+Alex Iwobi,MF,87,74,90,92,9.0,Fulham,54,12,16,9.0,0,100
+Joe Aribo,MF,84,78,88,94,8.8,Southampton,52,11,14,8.8,0,100
+Raphael Onyedika,MF,80,84,86,92,8.8,Club Brugge,42,9,11,8.6,0,100
+Samuel Chukwueze,FW,92,52,86,90,9.0,AC Milan,50,16,18,9.0,0,100
+Victor Osimhen,FW,98,50,82,92,9.8,Napoli,52,36,14,9.9,0,100
+Ademola Lookman,FW,94,54,88,90,9.2,Atalanta,48,24,17,9.2,0,100
+Moses Simon,FW,90,56,84,92,8.8,Nantes,54,18,20,8.8,0,100
+Kelechi Iheanacho,FW,88,50,80,88,8.6,Leicester,50,16,12,8.6,0,100
+Paul Onuachu,FW,90,48,76,90,8.8,Trabzonspor,46,22,10,8.6,0,100
+Terem Moffi,FW,86,48,78,90,8.4,Nice,42,14,10,8.4,0,100

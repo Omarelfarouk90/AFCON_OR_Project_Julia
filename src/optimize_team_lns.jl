@@ -16,14 +16,23 @@ Replaces Linear Programming approach with a metaheuristic solver.
 """
 
 function calculate_player_score(player::DataFrameRow, weights::NamedTuple)
-    """Calculate weighted score for a player based on strategy weights."""
-    return (
+    """Calculate weighted score for a player based on strategy weights, injury risk, and fitness."""
+    base_score = (
         weights.attack * player.Attack +
         weights.defense * player.Defense +
         weights.passing * player.Passing +
         weights.stamina * player.Stamina +
         weights.consistency * player.Consistency * 10  # Scale consistency
     )
+    
+    # Apply fitness multiplier (converts percentage to 0-1 scale)
+    fitness_multiplier = player.Fitness_Percent / 100.0
+    
+    # Apply injury risk penalty (exponential penalty for high risk)
+    # Injury_Risk scale: 0 (no risk) to 10 (high risk)
+    injury_penalty = exp(-player.Injury_Risk * 0.3)  # Exponential decay
+    
+    return base_score * fitness_multiplier * injury_penalty
 end
 
 function is_valid_formation(team::DataFrame)
@@ -172,7 +181,8 @@ function lns_optimize(df_players::DataFrame, weights::NamedTuple;
                       max_iterations::Int=1000, 
                       destroy_sizes::Vector{Int}=[2, 3, 4],
                       no_improve_limit::Int=200,
-                      seed::Int=42)
+                      seed::Int=42,
+                      injury_risk_threshold::Int=8)
     """
     Large Neighborhood Search for team selection optimization.
     
@@ -183,9 +193,15 @@ function lns_optimize(df_players::DataFrame, weights::NamedTuple;
     - destroy_sizes: Sizes of neighborhood to destroy
     - no_improve_limit: Stop if no improvement for this many iterations
     - seed: Random seed for reproducibility
+    - injury_risk_threshold: Exclude players with injury risk >= this value (default: 8)
     """
     
     Random.seed!(seed)
+    
+    # Filter out high-risk injured players
+    available_players = filter(row -> row.Injury_Risk < injury_risk_threshold, df_players)
+    println("Filtered out $(nrow(df_players) - nrow(available_players)) high-risk injured players (risk >= $injury_risk_threshold)")
+    df_players = available_players
     
     # Generate initial solution
     current_solution = generate_initial_solution(df_players, weights)

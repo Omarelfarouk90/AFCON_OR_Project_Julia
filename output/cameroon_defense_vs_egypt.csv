@@ -1,12 +1,12 @@
-Name,Position,Attack,Defense,Passing,Stamina,Consistency,Club,Matches_Last_5Y,Goals_Last_5Y,Assists_Last_5Y,FIFA_Ranking_Contribution
-Andre Onana,GK,12,92,76,90,9.4,Manchester United,55,0,0,9.4
-Oumar Gonzalez,DF,60,88,74,86,8.4,Al Ittihad,42,5,3,8.2
-Jean-Charles Castelletto,DF,62,90,76,88,8.8,Cardiff City,48,6,4,8.6
-Collins Fai,DF,70,86,78,90,8.6,Standard Liege,45,4,7,8.4
-Enzo Ebosse,DF,68,82,80,88,8.4,Udinese,38,4,8,8.4
-Nouhou Tolo,DF,74,84,80,94,8.8,Seattle Sounders,48,5,10,8.8
-Andre-Frank Zambo Anguissa,MF,80,88,90,96,9.2,Napoli,56,9,13,9.4
-Georges Mandjeck,MF,74,86,82,94,8.6,Al Taawon,45,6,8,8.2
-Olivier Kemen,MF,76,84,86,92,8.8,Young Boys,48,7,11,8.6
-Frank Magri,MF,78,82,84,90,8.6,Hearts,42,8,9,8.4
-Bryan Mbeumo,FW,90,54,88,92,9.0,Brentford,50,22,18,9.0
+Name,Position,Attack,Defense,Passing,Stamina,Consistency,Club,Matches_Last_5Y,Goals_Last_5Y,Assists_Last_5Y,FIFA_Ranking_Contribution,Injury_Risk,Fitness_Percent
+Andre Onana,GK,12,92,76,90,9.4,Manchester United,55,0,0,9.4,0,100
+Oumar Gonzalez,DF,60,88,74,86,8.4,Al Ittihad,42,5,3,8.2,0,100
+Jean-Charles Castelletto,DF,62,90,76,88,8.8,Cardiff City,48,6,4,8.6,0,100
+Collins Fai,DF,70,86,78,90,8.6,Standard Liege,45,4,7,8.4,0,100
+Enzo Ebosse,DF,68,82,80,88,8.4,Udinese,38,4,8,8.4,0,100
+Nouhou Tolo,DF,74,84,80,94,8.8,Seattle Sounders,48,5,10,8.8,0,100
+Andre-Frank Zambo Anguissa,MF,80,88,90,96,9.2,Napoli,56,9,13,9.4,0,100
+Georges Mandjeck,MF,74,86,82,94,8.6,Al Taawon,45,6,8,8.2,0,100
+Olivier Kemen,MF,76,84,86,92,8.8,Young Boys,48,7,11,8.6,0,100
+Frank Magri,MF,78,82,84,90,8.6,Hearts,42,8,9,8.4,0,100
+Bryan Mbeumo,FW,90,54,88,92,9.0,Brentford,50,22,18,9.0,0,100

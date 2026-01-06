@@ -1,12 +1,12 @@
-Name,Position,Attack,Defense,Passing,Stamina,Consistency,Club,Matches_Last_5Y,Goals_Last_5Y,Assists_Last_5Y,FIFA_Ranking_Contribution
-Yassine Bounou,GK,12,95,72,92,9.6,Al Hilal,52,0,0,9.6
-Nayef Aguerd,DF,60,90,74,90,8.8,West Ham,45,6,3,8.6
-Achraf Hakimi,DF,86,84,90,96,9.4,PSG,55,9,17,9.6
-Yahia Attiyat Allah,DF,74,80,78,90,8.2,Al Ahly Egypt,35,5,7,8.0
-Noussair Mazraoui,DF,80,86,86,94,9.0,Manchester United,48,5,12,9.2
-Romain Saiss,DF,56,92,76,88,8.9,Al Shabab,52,7,4,8.6
-Bilal El Khannouss,MF,86,70,88,90,8.6,Leicester,34,9,11,8.4
-Sofyan Amrabat,MF,72,87,92,96,9.2,Fiorentina,52,5,10,9.2
-Ismael Saibari,MF,90,67,86,88,8.4,PSV,32,11,13,8.2
-Azzedine Ounahi,MF,84,77,90,92,8.8,Marseille,42,7,12,8.7
-Brahim Diaz,FW,94,52,94,88,9.4,Real Madrid,48,18,15,9.4
+Name,Position,Attack,Defense,Passing,Stamina,Consistency,Club,Matches_Last_5Y,Goals_Last_5Y,Assists_Last_5Y,FIFA_Ranking_Contribution,Injury_Risk,Fitness_Percent
+Yassine Bounou,GK,12,95,72,92,9.6,Al Hilal,52,0,0,9.6,0,100
+Nayef Aguerd,DF,60,90,74,90,8.8,West Ham,45,6,3,8.6,0,100
+Achraf Hakimi,DF,86,84,90,96,9.4,PSG,55,9,17,9.6,0,100
+Yahia Attiyat Allah,DF,74,80,78,90,8.2,Al Ahly Egypt,35,5,7,8.0,0,100
+Noussair Mazraoui,DF,80,86,86,94,9.0,Manchester United,48,5,12,9.2,0,100
+Romain Saiss,DF,56,92,76,88,8.9,Al Shabab,52,7,4,8.6,0,100
+Bilal El Khannouss,MF,86,70,88,90,8.6,Leicester,34,9,11,8.4,0,100
+Sofyan Amrabat,MF,72,87,92,96,9.2,Fiorentina,52,5,10,9.2,0,100
+Ismael Saibari,MF,90,67,86,88,8.4,PSV,32,11,13,8.2,0,100
+Azzedine Ounahi,MF,84,77,90,92,8.8,Marseille,42,7,12,8.7,0,100
+Brahim Diaz,FW,94,52,94,88,9.4,Real Madrid,48,18,15,9.4,0,100

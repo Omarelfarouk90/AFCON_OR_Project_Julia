@@ -19,7 +19,7 @@
 This project uses **Operations Research (Large Neighborhood Search Metaheuristic)** to determine the optimal 11-player lineup for the Egyptian National Team for **AFCON 2025 (Morocco, Dec 2025 - Jan 2026)**. It provides comprehensive tournament analysis using:
 
 - **Large Neighborhood Search (LNS)** metaheuristic for player selection
-- **Real current player data** from AFCON 2025 tournament (Salah, Marmoush, etc.)
+- **Real current player data** from AFCON 2025 tournament (Salah 3 goals, Marmoush 1 goal, etc.)
 - **Multiple tactical strategies** (Balanced, Attack, Defense)
 - **Simulated Annealing** acceptance criteria for escaping local optima
 - **ASCII pitch visualizations** for all team formations
@@ -27,7 +27,40 @@ This project uses **Operations Research (Large Neighborhood Search Metaheuristic
 
 **Core Technology**: Pure Julia with custom LNS implementation (no commercial solvers required).
 
-**Tournament Context**: Egypt qualified for Round of 16 as Group B Winners (7 points: 2W, 1D). Beat Zimbabwe 2-1, South Africa 1-0, drew Angola 0-0.
+### Decision Variables & Objective Function
+
+**Decision Variables**:
+- Binary selection for each player: $x_i \in \{0, 1\}$ where $i$ is player index
+- $x_i = 1$ if player $i$ is selected in the starting 11, $x_i = 0$ otherwise
+- Total available players: 25 (Egypt squad)
+
+**Objective Function** (maximize team score):
+$$
+\text{Maximize: } Z = \sum_{i=1}^{n} x_i \cdot \left( w_a \cdot A_i + w_d \cdot D_i + w_p \cdot P_i + w_s \cdot S_i + w_c \cdot C_i \times 10 \right) \cdot F_i \cdot e^{-0.3 \cdot R_i}
+$$
+
+Where:
+- $A_i, D_i, P_i, S_i$ = Attack, Defense, Passing, Stamina scores (0-100 scale)
+- $C_i$ = Consistency score (0-10 scale, multiplied by 10 for normalization)
+- $w_a, w_d, w_p, w_s, w_c$ = Strategy-dependent weights
+- $F_i$ = Fitness percentage (0-100%, normalized to 0-1)
+- $R_i$ = Injury risk score (0-10 scale, where 0 = no risk, 10 = severe risk)
+- $e^{-0.3 \cdot R_i}$ = Exponential injury penalty (heavily penalizes high-risk players)
+
+**Weight Strategies**:
+- **Balanced**: $w_a=0.25, w_d=0.25, w_p=0.25, w_s=0.15, w_c=0.1$
+- **Attack**: $w_a=0.5, w_d=0.1, w_p=0.2, w_s=0.1, w_c=0.1$
+- **Defense**: $w_a=0.1, w_d=0.5, w_p=0.1, w_s=0.2, w_c=0.1$
+
+**Constraints**:
+1. Team size: $\sum_{i=1}^{n} x_i = 11$ (exactly 11 players)
+2. Goalkeeper: $\sum_{i \in GK} x_i = 1$ (exactly 1)
+3. Defenders: $3 \leq \sum_{i \in DF} x_i \leq 5$ (flexible formation)
+4. Midfielders: $\sum_{i \in MF} x_i \geq 2$ (minimum 2)
+5. Forwards: $\sum_{i \in FW} x_i \geq 1$ (minimum 1)
+6. **Injury Risk**: $x_i = 0$ if $R_i \geq 8$ (exclude high-risk players)
+
+**Tournament Context**: Egypt advanced to Quarter-Finals! Group B Winners (7 points: 2W, 1D), beat Zimbabwe 2-1, South Africa 1-0, drew Angola 0-0. Won Round of 16 vs Benin 3-1 (AET). QF opponent: Winner of Algeria/DR Congo (Jan 10, 2026).
 
 ---
 
@@ -123,6 +156,7 @@ Custom implementation of LNS optimization for team selection:
 3. **Repair Operator**: Rebuild team using greedy insertion with constraints
 4. **Acceptance Criterion**: Simulated Annealing (accept worse solutions with probability e^(Δ/T))
 5. **Termination**: Stop after 1000 iterations or 200 iterations without improvement
+6. **Injury Filtering**: Automatically exclude high-risk players (Injury_Risk ≥ 8)
 
 **Constraints**:
 - Exactly 1 Goalkeeper
@@ -130,11 +164,13 @@ Custom implementation of LNS optimization for team selection:
 - At least 2 Midfielders
 - At least 1 Forward
 - Total = 11 players
+- **No suspended/unavailable players** (Injury_Risk < 8)
 
-**Objective**: Maximize weighted score based on strategy:
+**Objective**: Maximize weighted score based on strategy, adjusted for fitness and injury risk:
 - **Balanced**: Attack×0.25 + Defense×0.25 + Passing×0.25 + Stamina×0.15 + Consistency×0.1
 - **Attack**: Attack×0.5 + Defense×0.1 + Passing×0.2 + Stamina×0.1 + Consistency×0.1
 - **Defense**: Attack×0.1 + Defense×0.5 + Passing×0.1 + Stamina×0.2 + Consistency×0.1
+- **Multipliers**: × (Fitness%/100) × e^(-0.3 × Injury_Risk)
 
 **Advantages**:
 - No commercial solvers required (pure Julia implementation)
@@ -142,7 +178,118 @@ Custom implementation of LNS optimization for team selection:
 - Fast convergence (typically 100-400 iterations)
 - Escapes local optima via simulated annealing
 
-### 3.2 Current AFCON 2025 Player Data
+### 3.2 Mathematical Formulation
+
+**Complete Optimization Model**:
+
+**Sets**:
+- $N$: Set of all available players
+- $GK$: Set of goalkeepers
+- $DF$: Set of defenders
+- $MF$: Set of midfielders
+- $FW$: Set of forwards
+
+**Decision Variables**:
+$$x_i = \begin{cases} 
+1 & \text{if player } i \text{ is selected} \\
+0 & \text{otherwise}
+\end{cases} \quad \forall i \in N$$
+
+**Parameters**:
+- $A_i$: Attack rating for player $i$ (0-100)
+- $D_i$: Defense rating for player $i$ (0-100)
+- $P_i$: Passing rating for player $i$ (0-100)
+- $S_i$: Stamina rating for player $i$ (0-100)
+- $C_i$: Consistency rating for player $i$ (0-10)
+- $F_i$: Fitness percentage for player $i$ (0-100%)
+- $R_i$: Injury risk score for player $i$ (0-10)
+- $w_a, w_d, w_p, w_s, w_c$: Strategy weights
+
+**Objective Function**:
+$$\max Z = \sum_{i \in N} x_i \left( w_a A_i + w_d D_i + w_p P_i + w_s S_i + 10 w_c C_i \right) \cdot \frac{F_i}{100} \cdot e^{-0.3 R_i}$$
+
+The objective maximizes total team quality while:
+- **Fitness Multiplier**: $F_i/100$ reduces score for partially fit players
+- **Injury Penalty**: $e^{-0.3 R_i}$ exponentially penalizes risky selections
+  - $R_i = 0$ (fully fit): multiplier = 1.0 (no penalty)
+  - $R_i = 3$ (minor concern): multiplier ≈ 0.41 (59% penalty)
+  - $R_i = 5$ (moderate risk): multiplier ≈ 0.22 (78% penalty)
+  - $R_i = 8$ (high risk): excluded by constraint
+
+**Subject to Constraints**:
+
+1. **Team Size Constraint**:
+$$\sum_{i \in N} x_i = 11$$
+
+2. **Position Constraints**:
+$$\sum_{i \in GK} x_i = 1 \quad \text{(exactly 1 goalkeeper)}$$
+$$3 \leq \sum_{i \in DF} x_i \leq 5 \quad \text{(3-5 defenders)}$$
+$$\sum_{i \in MF} x_i \geq 2 \quad \text{(at least 2 midfielders)}$$
+$$\sum_{i \in FW} x_i \geq 1 \quad \text{(at least 1 forward)}$$
+
+5. **Injury Risk Constraint** (player availability):
+$$x_i = 0 \quad \forall i : R_i \geq 8 \quad \text{(exclude high-risk players)}$$
+
+3. **Binary Constraint**:
+$$x_i \in \{0, 1\} \quad \forall i \in N$$
+
+**Injury Risk Modeling**:
+
+The model incorporates two injury-related factors:
+
+1. **Hard Constraint** (Availability): Players with $R_i \geq 8$ are automatically excluded
+   - Suspended players (e.g., Mohamed Hany after red card vs South Africa)
+   - Severely injured or unavailable players
+   
+2. **Soft Penalty** (Risk): Players with $0 < R_i < 8$ receive exponential score penalty
+   - $R_i = 0$: No penalty (100% selection probability if optimal)
+   - $R_i = 1-2$: Minor penalty (~10-30% reduction)
+   - $R_i = 3-4$: Moderate penalty (~40-60% reduction)
+   - $R_i = 5-7$: Major penalty (~70-90% reduction)
+
+3. **Fitness Multiplier**: $F_i$ (0-100%) reduces player effectiveness
+   - 100%: Fully fit, no reduction
+   - 90-95%: Minor fitness concern
+   - 80-90%: Significant fitness issue
+   - <80%: Major fitness problem
+
+**Current Injury Status** (as of Jan 6, 2026):
+- **Mohamed Hany**: Suspended (Injury_Risk = 8) - Red card in Group B match vs South Africa
+- **Key Players Fit**: Salah (R=0, F=100%), Marmoush (R=0, F=100%), Yasser Ibrahim (R=0, F=100%)
+
+**LNS Algorithm Pseudocode**:
+```
+Algorithm: Large Neighborhood Search for Team Selection
+Input: Players dataset, strategy weights, max_iterations, destroy_sizes
+Output: Optimal 11-player team
+
+1. Generate initial solution S₀ using greedy construction
+2. Set best_solution ← S₀, best_score ← score(S₀)
+3. For iteration = 1 to max_iterations:
+   a. Select random destroy_size k from destroy_sizes
+   b. S' ← destroy(S, k)  // Remove k players (except GK)
+   c. S'' ← repair(S')     // Add back players to reach 11
+   d. If not valid_formation(S''):
+      continue
+   e. Calculate Δ = score(S'') - score(S)
+   f. Set temperature T = max(0.01, 1.0 - iter/max_iter)
+   g. If Δ > 0 OR rand() < exp(Δ/T):
+      S ← S''
+      If score(S'') > best_score:
+         best_solution ← S''
+         best_score ← score(S'')
+4. Return best_solution
+```
+
+**Acceptance Criterion** (Simulated Annealing):
+$$P(\text{accept}) = \begin{cases}
+1 & \text{if } \Delta > 0 \\
+e^{\Delta/T} & \text{otherwise}
+\end{cases}$$
+
+Where $T = \max(0.01, 1.0 - \frac{\text{iteration}}{\text{max\_iterations}})$
+
+### 3.3 Current AFCON 2025 Player Data
 
 **Egyptian Squad** (25 players - AFCON 2025 roster):
 - **Goalkeepers**: Mohamed El Shenawy (Al Ahly), Mohamed Sobhi (Zamalek)
@@ -150,23 +297,28 @@ Custom implementation of LNS optimization for team selection:
 - **Midfielders**: Emam Ashour (Al Ahly), Hamdy Fathi (Al Ahly), Marwan Ateya (Al Ahly)
 - **Forwards**: **Mohamed Salah** (Liverpool, 2 goals in AFCON), **Omar Marmoush** (Frankfurt €65M, 1 goal), Mostafa Mohamed (Nantes), Trezeguet (Al-Fateh), Zizo (Zamalek)
 
-**Tournament Performance**:
+**Tournament Performance** (as of Jan 6, 2026):
+- **Quarter-Finalist** - Still competing! 🔥
 - Group B Winners: 7 points (2W, 1D, 0L)
 - Beat Zimbabwe 2-1 (Marmoush 64', Salah 90+1')
 - Beat South Africa 1-0 (Salah 45' pen)
 - Drew Angola 0-0
+- **Round of 16**: Beat Benin 3-1 (AET) - Attia 69', Ibrahim 97', Salah 120+4'
+- **Quarter-Final**: Jan 10 vs Winner of Algeria/DR Congo (Agadir)
+- **Salah Tournament Stats**: 3 goals (joint top scorer with Mahrez, El Kaabi, Osimhen, Lookman)
 
-**Opponent Squads** (All current AFCON 2025 data):
-- **Morocco** (Host): Brahim Díaz (3 goals), Ayoub El Kaabi (3 goals), Achraf Hakimi (PSG)
-- **Senegal**: Sadio Mané (Al Nassr), Nicolas Jackson (Chelsea, 2 goals), Pape Gueye
-- **Algeria**: Riyad Mahrez (3 goals - tournament top scorer), perfect 9 points
-- **Nigeria**: Victor Osimhen (Napoli), Ademola Lookman (2 goals), 9 points
-- **Cameroon**: André Onana (Man United), Bryan Mbeumo (Brentford)
-- **Ivory Coast**: Defending champions, Sebastien Haller (Dortmund), Amad Diallo (2 goals)
+**Opponent Squads** (All current AFCON 2025 data - updated Round of 16):
+- **Morocco** (Host): Brahim Díaz (4 goals - TOP SCORER), Beat Tanzania 1-0 (R16), faces Cameroon in QF
+- **Senegal**: Beat Sudan 3-1 (R16), Pape Gueye 2 goals, faces Mali in QF
+- **Algeria**: Riyad Mahrez (3 goals), perfect 9 pts group stage, R16 vs DR Congo (Jan 6)
+- **Nigeria**: Beat Mozambique 4-0 (R16), Osimhen 3 goals total, Lookman 3 goals, face QF3 winner
+- **Cameroon**: Beat South Africa 2-1 (R16), face Morocco in QF (Jan 9)
+- **Mali**: Beat Tunisia on penalties 3-2 (R16), face Senegal in QF
+- **Ivory Coast**: Defending champions, R16 vs Burkina Faso (Jan 6)
 
-All stats based on 2024-2025 season performance and current AFCON 2025 tournament form.
+All stats based on 2024-2025 season performance and current AFCON 2025 tournament form (updated Jan 6, 2026).
 
-### 3.3 ASCII Pitch Visualization
+### 3.4 ASCII Pitch Visualization
 
 Every optimized lineup includes beautiful ASCII formation display:
 
@@ -199,44 +351,86 @@ Every optimized lineup includes beautiful ASCII formation display:
 
 ## 4. Tournament Simulation Results
 
+**Simulation Date**: January 6, 2026  
+**Model**: Large Neighborhood Search (LNS) with Injury Risk Modeling  
+**Injury Model**: Players with Risk ≥ 8 excluded, exponential penalty e^(-0.3*R) applied  
+**Output**: Clean ASCII format (no encoding issues)  
+**Mohamed Hany**: Automatically excluded from all 18 lineups (Risk=8, suspended)
+
 ### 4.1 Strategic Recommendations for Egypt
 
-**🏆 BEST OVERALL STRATEGY**: **ATTACK (1-3-2-5 formation)**
-- Average disadvantage: -4.83 points (least negative across all opponents)
-- Formation: 1 GK, 3 DF, 2 MF, 5 FW
-- Key players: Salah, Marmoush, Mostafa Mohamed, Zizo, Trezeguet
+#### Best Overall Strategy: DEFENSE (1-3-3-4 formation)
+- **Average Disadvantage**: -1.38 points (most consistent)
+- **Total Score**: 239.4 (Attack 81.4, Defense 73.4, Passing 84.6)
+- **Usage**: 12/18 matchups (66.7%)
+- **Key Players**: Salah, Marmoush, Mostafa Mohamed, Zizo, Emam Ashour, Marwan Attia, Mohanad Lasheen
 
-**📊 TOUGHEST OPPONENTS** (in order):
-1. **Ivory Coast**: -8.2 avg disadvantage (🔴 VERY HARD - Defending champions)
-2. **Algeria**: -7.7 avg disadvantage (🔴 VERY HARD - Mahrez in top form, perfect record)
-3. **Nigeria**: -6.5 avg disadvantage (🟡 MODERATE - Osimhen threat)
-4. **Morocco**: -6.4 avg disadvantage (🟡 MODERATE - Home advantage)
-5. **Senegal**: -5.6 avg disadvantage (🟢 MANAGEABLE)
-6. **Cameroon**: -1.6 avg disadvantage (🟢 MANAGEABLE - Best matchup!)
+#### Strategy Performance Summary
 
-**💡 KEY INSIGHTS**:
-- Egypt is competitive but faces statistical disadvantages against all top opponents
-- **Cameroon is the most favorable matchup** (nearly even with attack strategy)
-- Attack strategy provides best balance across all opponents
-- All opponents are group winners/runners-up with strong tournament form
+| Strategy | Avg Advantage | Status | Total Score | Usage |
+|----------|---------------|--------|-------------|-------|
+| **DEFENSE**  | **-1.38** | **RISKY** | **239.4** | **66.7%** |
+| ATTACK       | -1.40     | RISKY     | 236.2     | 33.3%     |
+| BALANCED     | -3.30     | RISKY     | 239.4     | Rarely optimal |
+
+#### Opponent Difficulty Ranking
+
+| Rank | Opponent | Avg Advantage | Difficulty | Notes |
+|------|----------|---------------|------------|-------|
+| 1 | **Ivory Coast** | -4.5 | VERY HARD | Defending champions, strong all-around |
+| 2 | **Algeria** | -3.9 | VERY HARD | Perfect group stage (9 pts), Mahrez threat |
+| 3 | **Nigeria** | -2.8 | MODERATE | Balanced threat, Osimhen danger |
+| 4 | **Senegal** | -1.9 | MODERATE | Strong defense, Mane experience |
+| 5 | **Morocco** | -1.4 | MANAGEABLE | Host advantage offset by Egypt quality |
+| 6 | **Cameroon** | **+2.2** | **FAVORABLE** | Only positive matchup! |
+
+#### Key Insights
+- ✅ **Cameroon only favorable opponent** (+2.2 avg advantage)
+- ⚠️ **All strategies show negative average** (Egypt faces tough competition)
+- 🎯 **Defense most consistent** for strong opponents (Algeria, Senegal, Nigeria)
+- ⚔️ **Attack best for scoring** against weaker defenses (Morocco, Cameroon, Ivory Coast)
+- 🚑 **Injury model working**: Mohamed Hany correctly excluded from all lineups
 
 ### 4.2 Best Strategy by Opponent
 
-| Opponent | Best Strategy | Formation | Advantage | Difficulty |
-|----------|--------------|-----------|-----------|------------|
-| Morocco | Balanced | 1-3-4-3 | -6.1 | ⚠️ Challenging |
-| Senegal | Balanced | 1-3-4-3 | -4.7 | ⚠️ Challenging |
-| Algeria | Attack | 1-3-2-5 | -6.5 | ⚠️ Challenging |
-| Nigeria | Attack | 1-3-2-5 | -5.4 | ⚠️ Challenging |
-| Cameroon | Attack | 1-3-2-5 | +0.4 | ⚖️ Even Match |
-| Ivory Coast | Attack | 1-3-2-5 | -6.6 | ⚠️ Challenging |
+| Opponent | Best Strategy | Formation | Egypt Total | Opp Total | Advantage | Status |
+|----------|--------------|-----------|-------------|-----------|-----------|--------|
+| Morocco | ATTACK | 1-3-2-5 | 236.2 | 236.7 | -0.5 | Challenging |
+| Senegal | DEFENSE | 1-3-3-4 | 239.4 | 240.6 | -1.2 | Challenging |
+| Algeria | DEFENSE | 1-3-3-4 | 239.4 | 242.7 | -3.3 | Challenging |
+| Nigeria | DEFENSE | 1-3-3-4 | 239.4 | 240.7 | -1.3 | Challenging |
+| **Cameroon** | **ATTACK** | **1-3-2-5** | **236.2** | **232.8** | **+3.4** | **Competitive** |
+| Ivory Coast | ATTACK | 1-3-2-5 | 236.2 | 239.8 | -3.6 | Challenging |
+
+**Strategic Guidance**:
+- **vs Algeria** (likely QF opponent): Use DEFENSE (1-3-3-4), expect -3.3 disadvantage
+- **vs Cameroon**: Use ATTACK (1-3-2-5) for maximum scoring, +3.4 advantage
+- **vs Morocco/Ivory Coast**: Use ATTACK for offensive power despite disadvantage
 
 ### 4.3 Recommended Formations
 
-Most common formations across all simulations:
-- **1-3-4-3**: 33.3% (Balanced play, strong midfield)
-- **1-3-2-5**: 33.3% (All-out attack, 5 forwards)
-- **1-5-4-1**: 33.3% (Defensive, single striker)
+| Formation | Usage | Percentage | Best For |
+|-----------|-------|------------|----------|
+| **1-3-3-4** | 12/18 | **66.7%** | Defense/Balanced strategies, flexible midfield control |
+| **1-3-2-5** | 6/18  | 33.3%     | Attack strategy, 5 forwards for goal-scoring pressure |
+
+**Formation Details**:
+
+**1-3-3-4 (Defense Strategy)**:
+- GK: Mohamed El Shenawy (95)
+- DF: Yasser Ibrahim (87), Ahmed Fattouh (86), Khaled Sobhi (85)
+- MF: Emam Ashour (87), Marwan Attia (82), Mohanad Lasheen (79)
+- FW: Salah (96), Marmoush (92), Mostafa Mohamed (86), Zizo (90)
+- **Strengths**: Defensive stability (73.4), passing precision (84.6), midfield control
+- **Use Against**: Algeria, Senegal, Nigeria (strong opponents)
+
+**1-3-2-5 (Attack Strategy)**:
+- GK: Mohamed El Shenawy (95)
+- DF: Yasser Ibrahim (87), Khaled Sobhi (85), Ahmed Fattouh (86)
+- MF: Emam Ashour (87), Marwan Attia (82)
+- FW: Salah (96), Marmoush (92), Mostafa Mohamed (86), Zizo (90), Trezeguet (85)
+- **Strengths**: Attacking power (82.0), 5-forward pressure, goal-scoring threats
+- **Use Against**: Morocco, Cameroon, Ivory Coast (exploit defensive weaknesses)
 
 ---
 
@@ -283,13 +477,27 @@ Edit `data/egypt_squad.csv` to:
 - Add new players called up for tournament
 - Update stats after recent matches
 - Adjust for injuries/suspensions
+- Update injury risk and fitness percentages
 
 **Required columns**:
 ```
-Name,Position,Attack,Defense,Passing,Stamina,Consistency,Club,Matches_Last_5Y,Goals_Last_5Y,Assists_Last_5Y
+Name,Position,Attack,Defense,Passing,Stamina,Consistency,Club,Matches_Last_5Y,Goals_Last_5Y,Assists_Last_5Y,Injury_Risk,Fitness_Percent
 ```
 
-**Stats Scale**: 0-100 for Attack/Defense/Passing/Stamina, 0-10 for Consistency
+**Stats Scale**: 
+- Attack/Defense/Passing/Stamina: 0-100
+- Consistency: 0-10
+- **Injury_Risk**: 0-10 (0=fully fit, 8+=unavailable)
+- **Fitness_Percent**: 0-100% (100=full fitness)
+
+**Injury Risk Scale**:
+| Risk Score | Status | Selection Impact | Examples |
+|------------|--------|------------------|----------|
+| 0 | Fully Fit | No penalty | Salah, Marmoush, Yasser Ibrahim |
+| 1-2 | Minor Concern | ~10-30% penalty | Recent knock, fatigue |
+| 3-4 | Moderate Risk | ~40-60% penalty | Returning from injury |
+| 5-7 | High Risk | ~70-90% penalty | Doubtful fitness |
+| 8+ | **UNAVAILABLE** | **Excluded** | Suspended, injured (e.g., Hany) |
 
 ### 6.2 Adding New Opponents
 1. Create `data/opponents/newteam.csv` with player data
@@ -428,11 +636,14 @@ no_improve_limit = 100  # Down from 200
 - **FIFA rankings**: FIFA.com (2025 rankings)
 - **Current form**: AFCON 2025 group stage performances
 
-### Tournament Status (as of Jan 4, 2026)
-- **Group Stage**: Complete
-- **Round of 16**: Egypt qualified (waiting for opponent)
-- **Egypt's path**: Group B winners → R16 → QF → SF → Final
-- **Next match**: TBD (Draw completed, opponent assignment pending)
+### Tournament Status (as of Jan 6, 2026)
+- **Group Stage**: ✅ Complete
+- **Round of 16**: ✅ Complete - Egypt beat Benin 3-1 (AET)
+- **Egypt's path**: Group B winners → ✅ R16 → **QF (Jan 10)** → SF? → Final?
+- **Next match**: Quarter-Final on **January 10, 2026** at **Adrar Stadium, Agadir** (20:00 local)
+- **QF opponent**: Winner of Algeria vs DR Congo (playing Jan 6, 2026)
+- **Remaining teams**: 8 (Morocco, Cameroon, Senegal, Mali, Nigeria, Egypt, Algeria/DR Congo, Ivory Coast/Burkina Faso)
+- **Path to Final**: Win QF → Win SF (Jan 14) → Win Final (Jan 18 in Rabat)
 
 ---
 
