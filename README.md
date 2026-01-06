@@ -35,8 +35,12 @@ This project uses **Operations Research (Large Neighborhood Search Metaheuristic
 - Total available players: 25 (Egypt squad)
 
 **Objective Function** (maximize team score):
+
 $$
-\text{Maximize: } Z = \sum_{i=1}^{n} x_i \cdot \left( w_a \cdot A_i + w_d \cdot D_i + w_p \cdot P_i + w_s \cdot S_i + w_c \cdot C_i \times 10 \right) \cdot F_i \cdot e^{-0.3 \cdot R_i}
+\begin{aligned}
+\text{Maximize: } \quad Z &= \sum_{i=1}^{n} x_i \cdot \left( w_a \cdot A_i + w_d \cdot D_i + w_p \cdot P_i + w_s \cdot S_i + w_c \cdot C_i \times 10 \right) \\
+&\quad \times F_i \cdot e^{-0.3 \cdot R_i}
+\end{aligned}
 $$
 
 Where:
@@ -48,17 +52,27 @@ Where:
 - $e^{-0.3 \cdot R_i}$ = Exponential injury penalty (heavily penalizes high-risk players)
 
 **Weight Strategies**:
-- **Balanced**: $w_a=0.25, w_d=0.25, w_p=0.25, w_s=0.15, w_c=0.1$
-- **Attack**: $w_a=0.5, w_d=0.1, w_p=0.2, w_s=0.1, w_c=0.1$
-- **Defense**: $w_a=0.1, w_d=0.5, w_p=0.1, w_s=0.2, w_c=0.1$
+
+$$
+\begin{aligned}
+\textbf{Balanced:} \quad & w_a = 0.25, \; w_d = 0.25, \; w_p = 0.25, \; w_s = 0.15, \; w_c = 0.1 \\
+\textbf{Attack:} \quad & w_a = 0.5, \; w_d = 0.1, \; w_p = 0.2, \; w_s = 0.1, \; w_c = 0.1 \\
+\textbf{Defense:} \quad & w_a = 0.1, \; w_d = 0.5, \; w_p = 0.1, \; w_s = 0.2, \; w_c = 0.1
+\end{aligned}
+$$
 
 **Constraints**:
-1. Team size: $\sum_{i=1}^{n} x_i = 11$ (exactly 11 players)
-2. Goalkeeper: $\sum_{i \in GK} x_i = 1$ (exactly 1)
-3. Defenders: $3 \leq \sum_{i \in DF} x_i \leq 5$ (flexible formation)
-4. Midfielders: $\sum_{i \in MF} x_i \geq 2$ (minimum 2)
-5. Forwards: $\sum_{i \in FW} x_i \geq 1$ (minimum 1)
-6. **Injury Risk**: $x_i = 0$ if $R_i \geq 8$ (exclude high-risk players)
+
+$$
+\begin{aligned}
+1. \quad & \sum_{i=1}^{n} x_i = 11 && \text{(exactly 11 players)} \\
+2. \quad & \sum_{i \in GK} x_i = 1 && \text{(exactly 1 goalkeeper)} \\
+3. \quad & 3 \leq \sum_{i \in DF} x_i \leq 5 && \text{(flexible formation: 3-5 defenders)} \\
+4. \quad & \sum_{i \in MF} x_i \geq 2 && \text{(minimum 2 midfielders)} \\
+5. \quad & \sum_{i \in FW} x_i \geq 1 && \text{(minimum 1 forward)} \\
+6. \quad & x_i = 0 \text{ if } R_i \geq 8 && \text{(exclude high-risk players)}
+\end{aligned}
+$$
 
 **Tournament Context**: Egypt advanced to Quarter-Finals! Group B Winners (7 points: 2W, 1D), beat Zimbabwe 2-1, South Africa 1-0, drew Angola 0-0. Won Round of 16 vs Benin 3-1 (AET). QF opponent: Winner of Algeria/DR Congo (Jan 10, 2026).
 
@@ -190,10 +204,15 @@ Custom implementation of LNS optimization for team selection:
 - $FW$: Set of forwards
 
 **Decision Variables**:
-$$x_i = \begin{cases} 
+
+$$
+x_i = 
+\begin{cases} 
 1 & \text{if player } i \text{ is selected} \\
 0 & \text{otherwise}
-\end{cases} \quad \forall i \in N$$
+\end{cases} 
+\quad \forall \, i \in N
+$$
 
 **Parameters**:
 - $A_i$: Attack rating for player $i$ (0-100)
@@ -206,7 +225,13 @@ $$x_i = \begin{cases}
 - $w_a, w_d, w_p, w_s, w_c$: Strategy weights
 
 **Objective Function**:
-$$\max Z = \sum_{i \in N} x_i \left( w_a A_i + w_d D_i + w_p P_i + w_s S_i + 10 w_c C_i \right) \cdot \frac{F_i}{100} \cdot e^{-0.3 R_i}$$
+
+$$
+\begin{aligned}
+\max \quad Z &= \sum_{i \in N} x_i \left( w_a A_i + w_d D_i + w_p P_i + w_s S_i + 10 w_c C_i \right) \\
+&\quad \times \frac{F_i}{100} \times e^{-0.3 R_i}
+\end{aligned}
+$$
 
 The objective maximizes total team quality while:
 - **Fitness Multiplier**: $F_i/100$ reduces score for partially fit players
@@ -219,19 +244,29 @@ The objective maximizes total team quality while:
 **Subject to Constraints**:
 
 1. **Team Size Constraint**:
-$$\sum_{i \in N} x_i = 11$$
+   $$
+   \sum_{i \in N} x_i = 11
+   $$
 
 2. **Position Constraints**:
-$$\sum_{i \in GK} x_i = 1 \quad \text{(exactly 1 goalkeeper)}$$
-$$3 \leq \sum_{i \in DF} x_i \leq 5 \quad \text{(3-5 defenders)}$$
-$$\sum_{i \in MF} x_i \geq 2 \quad \text{(at least 2 midfielders)}$$
-$$\sum_{i \in FW} x_i \geq 1 \quad \text{(at least 1 forward)}$$
+   $$
+   \begin{aligned}
+   \sum_{i \in GK} x_i &= 1 && \text{(exactly 1 goalkeeper)} \\
+   3 \leq \sum_{i \in DF} x_i &\leq 5 && \text{(3-5 defenders)} \\
+   \sum_{i \in MF} x_i &\geq 2 && \text{(at least 2 midfielders)} \\
+   \sum_{i \in FW} x_i &\geq 1 && \text{(at least 1 forward)}
+   \end{aligned}
+   $$
 
-5. **Injury Risk Constraint** (player availability):
-$$x_i = 0 \quad \forall i : R_i \geq 8 \quad \text{(exclude high-risk players)}$$
+3. **Injury Risk Constraint** (player availability):
+   $$
+   x_i = 0 \quad \forall \, i : R_i \geq 8 \quad \text{(exclude high-risk players)}
+   $$
 
-3. **Binary Constraint**:
-$$x_i \in \{0, 1\} \quad \forall i \in N$$
+4. **Binary Constraint**:
+   $$
+   x_i \in \{0, 1\} \quad \forall \, i \in N
+   $$
 
 **Injury Risk Modeling**:
 
@@ -282,12 +317,20 @@ Output: Optimal 11-player team
 ```
 
 **Acceptance Criterion** (Simulated Annealing):
-$$P(\text{accept}) = \begin{cases}
+
+$$
+P(\text{accept}) = 
+\begin{cases}
 1 & \text{if } \Delta > 0 \\
 e^{\Delta/T} & \text{otherwise}
-\end{cases}$$
+\end{cases}
+$$
 
-Where $T = \max(0.01, 1.0 - \frac{\text{iteration}}{\text{max\_iterations}})$
+where the temperature is defined as:
+
+$$
+T = \max\left(0.01, \, 1.0 - \frac{\text{iteration}}{\text{max\_iterations}}\right)
+$$
 
 ### 3.3 Current AFCON 2025 Player Data
 
