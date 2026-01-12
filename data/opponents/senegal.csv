@@ -1,19 +1,19 @@
 Name,Position,Attack,Defense,Passing,Stamina,Consistency,Club,Matches_Last_5Y,Goals_Last_5Y,Assists_Last_5Y,FIFA_Ranking_Contribution,Injury_Risk,Fitness_Percent
-Edouard Mendy,GK,10,93,74,90,9.2,Al Ahli,54,0,0,9.2,0,100
+Edouard Mendy,GK,11,94,75,88,9.3,Al Ahli,59,0,0,9.3,1,97
 Seny Dieng,GK,10,87,70,86,8.4,Middlesbrough,25,0,0,8.0,0,100
-Kalidou Koulibaly,DF,60,95,80,90,9.6,Al Hilal,55,8,4,9.6,0,100
-Abdou Diallo,DF,64,90,82,92,9.0,RB Leipzig,48,5,6,9.0,0,100
-Ismail Jakobs,DF,77,82,84,94,8.7,Monaco,42,6,10,8.7,0,100
-Formose Mendy,DF,57,87,74,88,8.4,Amiens,33,4,3,8.0,0,100
-Youssouf Sabaly,DF,72,84,80,92,8.6,Real Betis,45,5,11,8.6,0,100
-Pape Matar Sarr,MF,82,80,88,96,9.0,Tottenham,44,10,12,9.2,0,100
-Idrissa Gueye,MF,70,92,87,94,9.4,Everton,58,6,10,9.2,0,100
-Krepin Diatta,MF,87,72,86,90,8.8,Monaco,45,11,14,8.8,0,100
-Pape Gueye,MF,77,84,90,92,8.6,Villarreal,42,8,11,8.6,0,100
-Iliman Ndiaye,FW,90,54,88,92,9.0,Everton,38,16,13,9.0,0,100
-Sadio Mane,FW,96,57,90,88,9.6,Al Nassr,52,25,18,9.6,0,100
-Ismaila Sarr,FW,92,52,82,94,9.0,Crystal Palace,54,21,16,9.0,0,100
-Nicolas Jackson,FW,90,50,78,92,8.8,Chelsea,42,19,10,9.0,0,100
-Habib Diallo,FW,88,48,76,90,8.6,Al Shabab,44,17,9,8.4,0,100
-Boulaye Dia,FW,86,50,80,88,8.4,Lazio,45,14,11,8.2,0,100
-Cherif Ndiaye,FW,84,46,74,86,8.2,Angers,35,12,7,8.0,0,100
+Kalidou Koulibaly,DF,61,96,81,88,9.7,Al Hilal,60,9,5,9.7,1,96
+Abdou Diallo,DF,65,91,83,90,9.1,RB Leipzig,53,6,7,9.1,2,94
+Ismail Jakobs,DF,78,83,85,92,8.8,Monaco,47,7,12,8.8,1,96
+Formose Mendy,DF,58,88,75,87,8.5,Amiens,38,4,4,8.1,2,93
+Youssouf Sabaly,DF,73,85,81,90,8.7,Real Betis,50,6,13,8.7,1,96
+Pape Matar Sarr,MF,84,81,89,94,9.1,Tottenham,49,12,14,9.3,2,95
+Idrissa Gueye,MF,71,93,88,92,9.5,Everton,63,7,11,9.3,1,97
+Krepin Diatta,MF,88,73,87,88,8.9,Monaco,50,13,16,8.9,2,94
+Pape Gueye,MF,78,85,91,90,8.7,Villarreal,47,9,13,8.7,1,96
+Iliman Ndiaye,FW,91,55,89,90,9.1,Everton,43,18,15,9.1,2,95
+Sadio Mane,FW,97,58,91,86,9.7,Al Nassr,57,27,20,9.7,1,96
+Ismaila Sarr,FW,93,53,83,92,9.1,Crystal Palace,59,23,18,9.1,1,97
+Nicolas Jackson,FW,91,51,79,90,8.9,Chelsea,47,21,12,9.1,2,95
+Habib Diallo,FW,89,49,77,88,8.7,Al Shabab,49,19,10,8.5,2,94
+Boulaye Dia,FW,87,51,81,87,8.5,Lazio,50,16,13,8.3,3,92
+Cherif Ndiaye,FW,85,47,75,85,8.3,Angers,40,14,8,8.1,2,94
