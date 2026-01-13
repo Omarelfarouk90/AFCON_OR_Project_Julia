@@ -63,16 +63,16 @@ $$
 
 **Constraints**:
 
-$$
+
 \begin{aligned}
-1.   \sum_{i=1}^{n} x_i = 11 && \text{(exactly 11 players)} \\ 
-2.   \sum_{i \in GK} x_i = 1 && \text{(exactly 1 goalkeeper)} \\ 
-3.  3 \leq \sum_{i \in DF} x_i \leq 5 && \text{(flexible formation: 3-5 defenders)} \\ 
-4.   \sum_{i \in MF} x_i \geq 2 && \text{(minimum 2 midfielders)} \\ 
-5.   \sum_{i \in FW} x_i \geq 1 && \text{(minimum 1 forward)} \\ 
-6.  x_i = 0 \text{ if } R_i \geq 8 && \text{(exclude high-risk players)} \\
+1.  $$\quad & \sum_{i=1}^{n} x_i = 11 && \text{(exactly 11 players)} $$ \\ 
+2.  $$ \quad & \sum_{i \in GK} x_i = 1 && \text{(exactly 1 goalkeeper)} $$\\ 
+3. $$ \quad & 3 \leq \sum_{i \in DF} x_i \leq 5 && \text{(flexible formation: 3-5 defenders)} $$ \\ 
+4. $$  \quad & \sum_{i \in MF} x_i \geq 2 && \text{(minimum 2 midfielders)} $$\\ 
+5. $$  \quad & \sum_{i \in FW} x_i \geq 1 && \text{(minimum 1 forward)} $$ \\ 
+6. $$ \quad & x_i = 0 \text{ if } R_i \geq 8 && \text{(exclude high-risk players)} $$\\
 \end{aligned}
-$$
+
 
 **Tournament Context**: **AFCON 2025 Semifinals!** Egypt is one of the final four teams competing for the championship. 
 
