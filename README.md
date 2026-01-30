@@ -333,14 +333,6 @@ Output: Optimal 11-player team
 
 **Acceptance Criterion** (Simulated Annealing):
 
-$$
-P(\text{accept}) = 
-\begin{cases}
-1 & \text{if } \Delta > 0 \\
-e^{\Delta/T} & \text{otherwise}
-\end{cases}
-$$
-
 where the temperature is defined as:
 
 $$
